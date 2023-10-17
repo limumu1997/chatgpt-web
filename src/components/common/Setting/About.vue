@@ -1,9 +1,8 @@
 <script setup lang='ts'>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { NSpin } from 'naive-ui'
-import pkg from '../../../../package.json'
 import { fetchChatConfig } from '@/api'
-import { useAuthStore } from '@/store'
+import pkg from '@/../package.json'
 
 interface ConfigState {
   timeoutMs?: number
@@ -14,13 +13,9 @@ interface ConfigState {
   usage?: string
 }
 
-const authStore = useAuthStore()
-
 const loading = ref(false)
 
 const config = ref<ConfigState>()
-
-const isChatGPTAPI = computed<boolean>(() => !!authStore.isChatGPTAPI)
 
 async function fetchConfig() {
   try {
@@ -44,32 +39,27 @@ onMounted(() => {
       <h2 class="text-xl font-bold">
         Version - {{ pkg.version }}
       </h2>
+      <h3>免责声明</h3>
       <div class="p-2 space-y-2 rounded-md bg-neutral-100 dark:bg-neutral-700">
         <p>
-          此项目开源于
-          <a
-            class="text-blue-600 dark:text-blue-500"
-            href="https://github.com/Chanzhaoyu/chatgpt-web"
-            target="_blank"
-          >
-            GitHub
-          </a>
-          ，免费且基于 MIT 协议，没有任何形式的付费行为！
+          1. 本产品提供的信息仅供参考，不构成任何投资、法律或其他专业建议。任何人不应该根据本产品中的信息来做出任何决策。
         </p>
         <p>
-          如果你觉得此项目对你有帮助，请在 GitHub 帮我点个 Star 或者给予一点赞助，谢谢！
+          2. 本产品内所提供的链接和内容可能包含有第三方网站的信息，这些内容并不代表本产品赞同或推荐该网站。
+        </p>
+        <p>
+          3. 本产品不保证网站服务将无中断、及时提供、安全可靠或不会出现错误。使用者承认其使用本产品的风险由其自行承担。
+        </p>
+        <p>
+          4. 本产品不对用户因使用或不能使用本产品或其内容而遭受的任何直接、间接、意外、特殊或结果性损失负责。
+        </p>
+        <p>
+          5. 本产品有权在不事先通知用户的情况下，在任何时间暂停或终止本产品的访问权限，或修改本声明。
+        </p>
+        <p>
+          使用本产品，即表示您已经完全理解并且接受了上述免责声明中的所有条款和条件。如果您不同意这些条款和条件，请立刻停止使用本产品。
         </p>
       </div>
-      <p>{{ $t("setting.api") }}：{{ config?.apiModel ?? '-' }}</p>
-      <p v-if="isChatGPTAPI">
-        {{ $t("setting.monthlyUsage") }}：{{ config?.usage ?? '-' }}
-      </p>
-      <p v-if="!isChatGPTAPI">
-        {{ $t("setting.reverseProxy") }}：{{ config?.reverseProxy ?? '-' }}
-      </p>
-      <p>{{ $t("setting.timeout") }}：{{ config?.timeoutMs ?? '-' }}</p>
-      <p>{{ $t("setting.socks") }}：{{ config?.socksProxy ?? '-' }}</p>
-      <p>{{ $t("setting.httpsProxy") }}：{{ config?.httpsProxy ?? '-' }}</p>
     </div>
   </NSpin>
 </template>
